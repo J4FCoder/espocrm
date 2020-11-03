@@ -405,6 +405,10 @@ define('views/record/search', 'view', function (Dep) {
                 view.populateDefaults();
                 this.fetch();
                 this.updateSearch();
+
+                if (view.getView('field').initialSearchIsNotIdle) {
+                    this.showApplyFiltersButton();
+                }
             }.bind(this));
 
             this.updateAddFilterButton();
@@ -413,7 +417,7 @@ define('views/record/search', 'view', function (Dep) {
             this.manageLabels();
             this.controlResetButtonVisibility();
 
-            this.showApplyFiltersButton();
+
         },
 
         refresh: function () {

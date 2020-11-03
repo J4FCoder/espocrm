@@ -38,7 +38,10 @@ define('views/fields/varchar', 'views/fields/base', function (Dep) {
 
         searchTemplate: 'fields/varchar/search',
 
-        searchTypeList: ['startsWith', 'contains', 'equals', 'endsWith', 'like', 'notContains', 'notEquals', 'notLike', 'isEmpty', 'isNotEmpty'],
+        searchTypeList: [
+            'startsWith', 'contains', 'equals', 'endsWith', 'like', 'notContains',
+            'notEquals', 'notLike', 'isEmpty', 'isNotEmpty',
+        ],
 
         setup: function () {
             this.setupOptions();

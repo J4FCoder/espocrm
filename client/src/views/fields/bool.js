@@ -42,6 +42,8 @@ define('views/fields/bool', 'views/fields/base', function (Dep) {
 
         validations: [],
 
+        initialSearchIsNotIdle: true,
+
         data: function () {
             var data = Dep.prototype.data.call(this);
             data.valueIsSet = this.model.has(this.name);

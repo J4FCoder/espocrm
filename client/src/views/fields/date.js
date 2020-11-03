@@ -44,17 +44,25 @@ define('views/fields/date', 'views/fields/base', function (Dep) {
 
         validations: ['required', 'date', 'after', 'before'],
 
-        searchTypeList: ['lastSevenDays', 'ever', 'isEmpty', 'currentMonth', 'lastMonth', 'nextMonth', 'currentQuarter', 'lastQuarter', 'currentYear', 'lastYear', 'today', 'past', 'future', 'lastXDays', 'nextXDays', 'olderThanXDays', 'afterXDays', 'on', 'after', 'before', 'between'],
+        searchTypeList: [
+            'lastSevenDays', 'ever', 'isEmpty', 'currentMonth', 'lastMonth', 'nextMonth', 'currentQuarter',
+            'lastQuarter', 'currentYear', 'lastYear', 'today', 'past', 'future', 'lastXDays', 'nextXDays',
+            'olderThanXDays', 'afterXDays', 'on', 'after', 'before', 'between',
+        ],
+
+        initialSearchIsNotIdle: true,
 
         setup: function () {
             Dep.prototype.setup.call(this);
 
             if (this.getConfig().get('fiscalYearShift')) {
                 this.searchTypeList = Espo.Utils.clone(this.searchTypeList);
+
                 if (this.getConfig().get('fiscalYearShift') % 3 != 0) {
                     this.searchTypeList.push('currentFiscalQuarter');
                     this.searchTypeList.push('lastFiscalQuarter');
                 }
+
                 this.searchTypeList.push('currentFiscalYear');
                 this.searchTypeList.push('lastFiscalYear');
             }
