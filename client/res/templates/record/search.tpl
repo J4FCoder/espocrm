@@ -67,5 +67,8 @@
 </div>
 
 <div class="advanced-filters-apply-container hidden">
-    <a href="javascript:" class="btn btn-default btn-sm" data-action="applyFilters">{{translate 'Apply'}}</a>
+    <a href="javascript:" class="btn btn-default btn-sm" data-action="applyFilters">
+        <span class="fas fa-search"></span> {{translate 'Apply'}}
+
+    </a>
 </div>
