@@ -54,9 +54,11 @@ define('views/record/search', 'view', function (Dep) {
 
         toShowApplyButton: false,
 
+        isSearchedWithAdvancedFilter: false,
+
         viewModeIconClassMap: {
             list: 'fas fa-align-justify',
-            kanban: 'fas fa-align-left fa-rotate-90'
+            kanban: 'fas fa-align-left fa-rotate-90',
         },
 
         data: function () {
@@ -172,6 +174,10 @@ define('views/record/search', 'view', function (Dep) {
             }
 
             this.loadSearchData();
+
+            if (this.hasAdvancedFilter()) {
+                this.isSearchedWithAdvancedFilter = true;
+            }
 
             if (this.presetName) {
                 var hasPresetListed = false;
@@ -381,7 +387,13 @@ define('views/record/search', 'view', function (Dep) {
             this.handleLeftDropdownVisibility();
             this.controlResetButtonVisibility();
 
-            this.showApplyFiltersButton();
+            if (this.isSearchedWithAdvancedFilter) {
+                this.showApplyFiltersButton();
+            } else {
+                if (!this.hasAdvancedFilter()) {
+                    this.hideApplyFiltersButton();
+                }
+            }
         },
 
         addFilter: function (name) {
@@ -419,6 +431,7 @@ define('views/record/search', 'view', function (Dep) {
             this.presetName = presetName;
 
             var advanced = this.getPresetData();
+
             this.primary = this.getPrimaryFilterName();
 
             var isPreset = !(this.primary === this.presetName);
@@ -697,6 +710,12 @@ define('views/record/search', 'view', function (Dep) {
             this.updateSearch();
             this.updateCollection();
             this.controlResetButtonVisibility();
+
+            this.isSearchedWithAdvancedFilter = this.hasAdvancedFilter();
+        },
+
+        hasAdvancedFilter: function () {
+            return Object.keys(this.advanced).length > 0;
         },
 
         getFilterDataList: function () {
@@ -705,7 +724,7 @@ define('views/record/search', 'view', function (Dep) {
             for (var field in this.advanced) {
                 arr.push({
                     key: 'filter-' + field,
-                    name: field
+                    name: field,
                 });
             }
 
