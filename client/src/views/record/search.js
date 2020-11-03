@@ -52,7 +52,9 @@ define('views/record/search', 'view', function (Dep) {
 
         textFilterDisabled: false,
 
-        toShowApplyButton: false,
+        toShowApplyFiltersButton: false,
+
+        toShowResetFiltersText: false,
 
         isSearchedWithAdvancedFilter: false,
 
@@ -78,7 +80,8 @@ define('views/record/search', 'view', function (Dep) {
                 viewModeDataList: this.viewModeDataList || [],
                 hasViewModeSwitcher: this.viewModeList && this.viewModeList.length > 1,
                 isWide: this.options.isWide,
-                toShowApplyButton: this.toShowApplyButton,
+                toShowApplyFiltersButton: this.toShowApplyFiltersButton,
+                toShowResetFiltersText: this.toShowResetFiltersText,
             };
         },
 
@@ -388,7 +391,7 @@ define('views/record/search', 'view', function (Dep) {
             this.controlResetButtonVisibility();
 
             if (this.isSearchedWithAdvancedFilter) {
-                this.showApplyFiltersButton();
+                this.showResetFiltersButton();
             } else {
                 if (!this.hasAdvancedFilter()) {
                     this.hideApplyFiltersButton();
@@ -924,14 +927,29 @@ define('views/record/search', 'view', function (Dep) {
             return defs;
         },
 
-        showApplyFiltersButton: function () {
-            this.toShowApplyButton = true;
+        showResetFiltersButton: function () {
+            this.toShowApplyFiltersButton = true;
+            this.toShowResetFiltersText = true;
 
             this.$applyFiltersContainer.removeClass('hidden');
+
+            this.$applyFiltersContainer.find('.text-apply').addClass('hidden');
+            this.$applyFiltersContainer.find('.text-reset').removeClass('hidden');
+        },
+
+        showApplyFiltersButton: function () {
+            this.toShowApplyFiltersButton = true;
+            this.toShowResetFiltersText = false;
+
+            this.$applyFiltersContainer.removeClass('hidden');
+
+            this.$applyFiltersContainer.find('.text-reset').addClass('hidden');
+            this.$applyFiltersContainer.find('.text-apply').removeClass('hidden');
         },
 
         hideApplyFiltersButton: function () {
-            this.toShowApplyButton = false;
+            this.toShowApplyFiltersButton = false;
+            this.toShowResetFiltersText = false;
 
             this.$applyFiltersContainer.addClass('hidden');
         },
