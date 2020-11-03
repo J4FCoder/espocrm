@@ -69,6 +69,5 @@
 <div class="advanced-filters-apply-container{{#unless toShowApplyButton}} hidden{{/unless}}">
     <a href="javascript:" class="btn btn-default btn-sm" data-action="applyFilters">
         <span class="fas fa-search"></span> {{translate 'Apply'}}
-
     </a>
 </div>
