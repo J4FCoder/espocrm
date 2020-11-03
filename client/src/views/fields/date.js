@@ -199,10 +199,19 @@ define('views/fields/date', 'views/fields/base', function (Dep) {
 
                 if (this.mode == 'search') {
                     var $elAdd = this.$el.find('input.additional');
+
                     $elAdd.datepicker(options);
                     $elAdd.parent().find('button.date-picker-btn').on('click', function (e) {
                         $elAdd.datepicker('show');
                     });
+
+                    this.$el.find('select.search-type').on('change', function () {
+                        this.trigger('change');
+                    }.bind(this));
+
+                    $elAdd.on('change', function () {
+                        this.trigger('change');
+                    }.bind(this));
                 }
 
                 this.$element.parent().find('button.date-picker-btn').on('click', function (e) {

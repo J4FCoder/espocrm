@@ -48,6 +48,16 @@ define('views/fields/bool', 'views/fields/base', function (Dep) {
             return data;
         },
 
+        afterRender: function () {
+            Dep.prototype.afterRender.call(this);
+
+            if (this.mode == 'search') {
+                this.$element.on('change', function () {
+                    this.trigger('change');
+                }.bind(this));
+            }
+        },
+
         fetch: function () {
             var value = this.$element.get(0).checked;
             var data = {};

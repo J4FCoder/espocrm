@@ -157,6 +157,16 @@ define('views/fields/varchar', 'views/fields/base', function (Dep) {
                     this.$element.autocomplete('dispose');
                 }, this);
             }
+
+            if (this.mode === 'search') {
+                this.$el.find('select.search-type').on('change', function () {
+                    this.trigger('change');
+                }.bind(this));
+
+                this.$element.on('input', function () {
+                    this.trigger('change');
+                }.bind(this));
+            }
         },
 
         fetch: function () {

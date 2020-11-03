@@ -65,3 +65,7 @@
     </div>
 {{/each}}
 </div>
+
+<div class="advanced-filters-apply-container hidden">
+    <a href="javascript:" class="btn btn-default btn-sm" data-action="applyFilters">{{translate 'Apply'}}</a>
+</div>
