@@ -874,6 +874,20 @@ define('views/record/search', 'view', function (Dep) {
                 }
 
                 this.listenTo(view, 'change', function () {
+                    var toShowApply = this.isSearchedWithAdvancedFilter;
+
+                    if (!toShowApply) {
+                        var data = view.getView('field').fetchSearch();
+
+                        if (data) {
+                            toShowApply = true;
+                        }
+                    }
+
+                    if (!toShowApply) {
+                        return;
+                    }
+
                     this.showApplyFiltersButton();
                 }, this);
             });
