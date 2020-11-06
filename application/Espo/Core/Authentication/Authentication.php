@@ -46,6 +46,7 @@ use Espo\Core\Authentication\{
     Result,
     LoginFactory,
     TwoFactor\Factory as TwoFAFactory,
+    AuthToken\AuthTokenManager,
 };
 
 use Espo\Core\{
@@ -89,7 +90,8 @@ class Authentication
         Metadata $metadata,
         EntityManagerProxy $entityManagerProxy,
         LoginFactory $authLoginFactory,
-        TwoFAFactory $auth2FAFactory
+        TwoFAFactory $auth2FAFactory,
+        AuthTokenManager $authTokenManager
     ) {
         $this->allowAnyAccess = $allowAnyAccess;
 
@@ -100,6 +102,7 @@ class Authentication
         $this->entityManager = $entityManagerProxy;
         $this->authLoginFactory = $authLoginFactory;
         $this->auth2FAFactory = $auth2FAFactory;
+        $this->authTokenManager = $authTokenManager;
     }
 
     protected function getDefaultAuthenticationMethod()
