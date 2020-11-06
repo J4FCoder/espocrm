@@ -50,7 +50,17 @@ interface AuthTokenManager
     public function getActive(string $token) : ?AuthToken;
 
     /**
-     * Store an auth token.
+     * Store an auth token. Suppoed to be called only once when created.
      */
-    public function save(AuthToken $authToken);
+    public function store(AuthToken $authToken);
+
+    /**
+     * Make an auth token inactive (invalid).
+     */
+    public function inactivate(AuthToken $authToken);
+
+    /**
+     * Set a last access attribute to a current time. Implementation can be skipped to avoid excessive writing.
+     */
+    public function renew(AuthToken $authToken);
 }

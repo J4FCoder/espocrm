@@ -61,7 +61,7 @@ interface AuthToken
 
     /**
      * Get a password hash. If a password hash is not stored in token, then returns NULL.
-     * If you store auth tokens on a different server it's reasonable to avoid hashes being sent for a security reason.
+     * If you store auth tokens remotely it's reasonable to avoid hashes being sent for a security reason.
      */
     public function getHash() : ?string;
 
@@ -102,7 +102,7 @@ interface AuthToken
 
     /**
      * Set a password hash. Can be skipped in implementation.
-     * If you store auth tokens on a different server it's reasonable to avoid hashes being sent for a security reason.
+     * If you store auth tokens remotely it's reasonable to avoid hashes being sent for a security reason.
      * If you don't store hashes, then you will need to use a custom login implementation instead of
      * a default `Espo\Core\Authentication\Login\Espo`.
      */
@@ -115,7 +115,6 @@ interface AuthToken
 
     /**
      * Set a last access date-time. Can be skipped in implementation.
-     * It can be reasonable to not to write a last access to avoid writing operations on each API request.
      */
     public function setLastAccess(string $lastAccess);
 }

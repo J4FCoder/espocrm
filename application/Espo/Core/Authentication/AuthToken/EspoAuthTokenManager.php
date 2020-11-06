@@ -78,9 +78,39 @@ class EspoAuthTokenManager implements AuthTokenManager
         return $authToken;
     }
 
-    public function save(AuthToken $authToken)
+    public function store(AuthToken $authToken)
     {
         $this->validate($authToken);
+
+        if (!$authToken->isNew()) {
+            throw new RuntimeException("Can store only new auth token.");
+        }
+
+        $this->entityManager
+            ->getRepository('AuthToken')
+            ->save($authToken);
+    }
+
+    public function inactivate(AuthToken $authToken)
+    {
+        $this->validateNotChanged($authToken);
+
+        $authToken->setInactive();
+
+        $this->entityManager
+            ->getRepository('AuthToken')
+            ->save($authToken);
+    }
+
+    public function renew(AuthToken $authToken)
+    {
+        $this->validateNotChanged($authToken);
+
+        if ($authToken->isNew()) {
+            throw new RuntimeException("Can renew only not new auth token.");
+        }
+
+        $authToken->setLastAccess(date('Y-m-d H:i:s'));
 
         $this->entityManager
             ->getRepository('AuthToken')
@@ -95,6 +125,19 @@ class EspoAuthTokenManager implements AuthTokenManager
 
         if (!$authToken->getUserId()) {
             throw new RuntimeException("Empty user ID.");
+        }
+    }
+
+    protected function validateNotChanged(AuthToken $authToken)
+    {
+        if (
+            $authToken->isAttributeChanged('token') ||
+            $authToken->isAttributeChanged('secret') ||
+            $authToken->isAttributeChanged('hash') ||
+            $authToken->isAttributeChanged('userId') ||
+            $authToken->isAttributeChanged('portalId')
+        ) {
+            throw new RuntimeException("Auth token was changed.");
         }
     }
 }
