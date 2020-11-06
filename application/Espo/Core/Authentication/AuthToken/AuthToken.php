@@ -29,6 +29,9 @@
 
 namespace Espo\Core\Authentication\AuthToken;
 
+/**
+ * An auth token record.
+ */
 interface AuthToken
 {
     /**
@@ -58,6 +61,7 @@ interface AuthToken
 
     /**
      * Get a password hash. If a password hash is not stored in token, then returns NULL.
+     * If you store auth tokens on a different server it's reasonable to avoid hashes being sent for a security reason.
      */
     public function getHash() : ?string;
 
@@ -76,4 +80,42 @@ interface AuthToken
      */
     public function setInactive();
 
+    /**
+     * Set a token. Supposed that it's generated.
+     */
+    public function setToken(string $token);
+
+    /**
+     * Set a user ID.
+     */
+    public function setUserId(string $userId);
+
+    /**
+     * Set a portal ID. A token can be associated with a specific portal.
+     */
+    public function setPortalId(string $portalId);
+
+    /**
+     * Set a password hash. Supposed that it's generated. Can be skipped in implementation.
+     */
+    public function setSecret(string $secret);
+
+    /**
+     * Set a password hash. Can be skipped in implementation.
+     * If you store auth tokens on a different server it's reasonable to avoid hashes being sent for a security reason.
+     * If you don't store hashes, then you will need to use a custom login implementation instead of
+     * a default `Espo\Core\Authentication\Login\Espo`.
+     */
+    public function setHash(string $hash);
+
+    /**
+     * Set an IP address.
+     */
+    public function setIpAddress(string $ipAddress);
+
+    /**
+     * Set a last access date-time. Can be skipped in implementation.
+     * It can be reasonable to not to write a last access to avoid writing operations on each API request.
+     */
+    public function setLastAccess(string $lastAccess);
 }

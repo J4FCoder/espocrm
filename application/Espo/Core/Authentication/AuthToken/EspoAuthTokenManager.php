@@ -35,7 +35,7 @@ use Espo\{
 
 use RuntimeException;
 
-class EspoAuthTokenManager
+class EspoAuthTokenManager implements AuthTokenManager
 {
     protected $entityManager;
 
@@ -49,8 +49,6 @@ class EspoAuthTokenManager
         $authToken = $this->entityManager
             ->getRepository('AuthToken')
             ->getNew();
-
-        $authToken->set('token', $this->generateToken());
 
         return $authToken;
     }
@@ -67,6 +65,19 @@ class EspoAuthTokenManager
         return $authToken;
     }
 
+    public function getActive(string $token) : ?AuthToken
+    {
+        $authToken = $this->entityManager
+            ->getRepository('AuthToken')
+            ->where([
+                'token' => $token,
+                'isActive' => true,
+            ])
+            ->findOne();
+
+        return $authToken;
+    }
+
     public function save(AuthToken $authToken)
     {
         $this->validate($authToken);
@@ -76,41 +87,13 @@ class EspoAuthTokenManager
             ->save($authToken);
     }
 
-    public function inactivate(AuthToken $authToken)
-    {
-        $this->validate($authToken);
-
-        $authToken->setInactive();
-
-        $this->entityManager
-            ->getRepository('AuthToken')
-            ->save($authToken);
-    }
-
-    protected function generateToken() : string
-    {
-        $length = 16;
-
-        if (function_exists('random_bytes')) {
-            return bin2hex(random_bytes($length));
-        }
-
-        if (function_exists('mcrypt_create_iv')) {
-            return bin2hex(mcrypt_create_iv($length, \MCRYPT_DEV_URANDOM));
-        }
-
-        if (function_exists('openssl_random_pseudo_bytes')) {
-            return bin2hex(openssl_random_pseudo_bytes($length));
-        }
-    }
-
     protected function validate(AuthToken $authToken)
     {
         if (!$authToken->getToken()) {
             throw new RuntimeException("Empty token.");
         }
 
-        if (!$authToken->getUserUd()) {
+        if (!$authToken->getUserId()) {
             throw new RuntimeException("Empty user ID.");
         }
     }
